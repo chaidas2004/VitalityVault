@@ -10,6 +10,16 @@ const ExerciseSchema = new Schema({
       type: Number,
       required: true,
       min: [1, 'Enter valid duration in minutes.']
+  },
+  sets: {
+    type: Number,
+    required: true,
+    min: [1, 'How many sets?']
+  },
+  rep: {
+    type: Number,
+    required: true,
+    min: [1, 'How many reps?']
   }
 });
 
