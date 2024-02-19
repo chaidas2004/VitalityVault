@@ -35,6 +35,21 @@ app.post('/exercises', async (request, response) => {
         response.status(500).send({message: error.message})
     }
 });
+
+//Route for getting all exercises from mongoose
+app.get('/exercises', async (request, response) => {
+    try {
+     const exercises = await Exercise.find({});
+     return response.status(200).json({
+        count: exercises.length,
+        data: exercises
+     });
+    } catch(error) {
+        console.log(error.message);
+        response.status(500).send({message: error.message})
+    }
+});
+
 mongoose
   .connect(mongoDBURL)
   .then(() => {
