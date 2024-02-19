@@ -6,10 +6,10 @@ const ExerciseSchema = new Schema({
       type: String,
       required: [true, "Name this exercise."]
   },
-  duration: {
+  durationInMin: {
       type: Number,
       required: true,
-      min: [1, 'Enter valid duration.']
+      min: [1, 'Enter valid duration in minutes.']
   }
 });
 

@@ -18,7 +18,7 @@ app.post('/exercises', async (request, response) => {
     try {
         if (
             !request.body.name ||
-            !request.body.duration 
+            !request.body.durationInMin 
         ) {
             return response.status(400).send({
                 message: 'Send all required fields',
@@ -26,7 +26,7 @@ app.post('/exercises', async (request, response) => {
         }
         const newExercise = {
             name: request.body.name,
-            duration: request.body.duration,
+            durationInMin: request.body.durationInMin,
         };
         const exercise = await Exercise.create(newExercise);
         return response.status(201).send(exercise);
@@ -37,13 +37,23 @@ app.post('/exercises', async (request, response) => {
 });
 
 //Route for getting all exercises from mongoose
-app.get('/exercises', async (request, response) => {
+app.get('/exercises/:id', async (request, response) => {
     try {
-     const exercises = await Exercise.find({});
-     return response.status(200).json({
-        count: exercises.length,
-        data: exercises
-     });
+        const { id } = request.params;
+        const exercise = await Exercise.findById(id);
+        return response.status(200).json(exercise);
+    } catch(error) {
+        console.log(error.message);
+        response.status(500).send({message: error.message});
+    }
+});
+
+//Route for getting one exercises from mongoose via id
+app.get('/exercises/:id', async (request, response) => {
+    try {
+     const { id } = request.params;
+     const exercise = await Exercise.findById({id});
+     return response.status(200).json(exercise);
     } catch(error) {
         console.log(error.message);
         response.status(500).send({message: error.message})
