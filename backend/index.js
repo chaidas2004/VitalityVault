@@ -64,6 +64,35 @@ app.get('/exercises/:id', async (request, response) => {
     }
 });
 
+// Route for updating an exercise
+router.put('/:id', async (request, response) => {
+    try {
+      if (
+        !request.body.name ||
+        !request.body.durationInMin ||
+        !request.body.sets ||
+        !request.body.reps
+      ) {
+        return response.status(400).send({
+          message: 'Send all required fields',
+        });
+      }
+  
+      const { id } = request.params;
+  
+      const result = await Book.findByIdAndUpdate(id, request.body);
+  
+      if (!result) {
+        return response.status(404).json({ message: 'Exercise not found' });
+      }
+  
+      return response.status(200).send({ message: 'Exercise updated successfully' });
+    } catch (error) {
+      console.log(error.message);
+      response.status(500).send({ message: error.message });
+    }
+  });
+
 mongoose
   .connect(mongoDBURL)
   .then(() => {
