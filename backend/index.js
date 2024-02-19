@@ -18,9 +18,7 @@ app.post('/exercises', async (request, response) => {
     try {
         if (
             !request.body.name ||
-            !request.body.durationInMin ||
-            !request.body.sets ||
-            !request.body.reps
+            !request.body.durationInMin 
         ) {
             return response.status(400).send({
                 message: 'Send all required fields',
@@ -29,8 +27,6 @@ app.post('/exercises', async (request, response) => {
         const newExercise = {
             name: request.body.name,
             durationInMin: request.body.durationInMin,
-            sets: request.body.sets,
-            reps: request.body.reps
         };
         const exercise = await Exercise.create(newExercise);
         return response.status(201).send(exercise);
