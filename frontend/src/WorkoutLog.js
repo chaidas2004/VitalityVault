@@ -56,7 +56,7 @@ const WorkoutLog = () => {
   };
 
   const handleExerciseSelect = (exercise) => {
-    setSelectedExercise(exercise.name);
+    setSelectedExercise(exercise);
     setExerciseDetails({ ...exercise });
   };
 
@@ -152,7 +152,7 @@ const WorkoutLog = () => {
         <ul>
           {workoutPlan.exercises.map((exercise, index) => (
             <li key={index}>
-              {exercise.exercise.name} - Sets: {exercise.sets}, Reps: {exercise.reps}, Intensity: {exercise.intensity}%
+              Exercise: {exercise.exercise.name} - Sets: {exercise.sets}, Reps: {exercise.reps}, Intensity: {exercise.intensity}%
               <button onClick={() => handleRemoveExercise(index)}>Remove</button>
             </li>
           ))}
