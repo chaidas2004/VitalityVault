@@ -1,0 +1,47 @@
+/* WorkoutLog.css */
+.workout-form {
+  max-width: 400px;
+  margin: auto;
+  padding: 20px;
+  background: #f4f4f4;
+  border-radius: 8px;
+}
+
+.workout-form h2 {
+  text-align: center;
+  color: #333;
+}
+
+.workout-form div {
+  margin-bottom: 15px;
+}
+
+.workout-form label {
+  display: block;
+  margin-bottom: 5px;
+  color: #333;
+}
+
+.workout-form input[type="text"],
+.workout-form input[type="number"] {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+  box-sizing: border-box; /* Ensures padding doesn't affect overall width */
+}
+
+.workout-form button {
+  width: 100%;
+  padding: 10px;
+  background-color: #5cb85c; /* Bootstrap success color */
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.workout-form button:hover {
+  background-color: #4cae4c; /* Slightly darker shade */
+}
