@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 
+
 // Sample exercise library data
 const exerciseLibrary = [
   { name: 'Squats', description: 'A compound exercise that targets the muscles of the lower body.', sets: 3, reps: 10 },

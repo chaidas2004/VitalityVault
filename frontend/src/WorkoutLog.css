@@ -1,47 +1,81 @@
 /* WorkoutLog.css */
-.workout-form {
-  max-width: 400px;
-  margin: auto;
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Professional font */
+  background-color: #b3d9ff; /* Light marine blue background */
+  color: #333; /* Dark text for contrast */
+  margin: 0;
   padding: 20px;
-  background: #f4f4f4;
+}
+
+h2, h3 {
+  color: #205375; /* Slightly darker marine shade for headings */
+}
+
+form, .current-plan {
+  background-color: rgba(255, 255, 255, 0.8); /* Slightly transparent white for readability */
   border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 20px;
 }
 
-.workout-form h2 {
-  text-align: center;
-  color: #333;
-}
-
-.workout-form div {
-  margin-bottom: 15px;
-}
-
-.workout-form label {
-  display: block;
-  margin-bottom: 5px;
-  color: #333;
-}
-
-.workout-form input[type="text"],
-.workout-form input[type="number"] {
+input[type="text"], select, input[type="number"], input[type="range"] {
   width: 100%;
   padding: 10px;
-  margin-bottom: 10px;
+  margin: 10px 0;
   border-radius: 5px;
-  border: 1px solid #ddd;
-  box-sizing: border-box; /* Ensures padding doesn't affect overall width */
+  border: 1px solid #ccc;
+  box-sizing: border-box;
 }
 
-.workout-form button {
-  width: 100%;
-  padding: 10px;
-  background-color: #5cb85c; /* Bootstrap success color */
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  background: #205375; /* Slider track */
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  background: #fff;
+  cursor: pointer; /* Custom styles for slider thumb */
+  border: 2px solid #205375; /* Marine blue border for thumb */
+  border-radius: 50%;
+}
+
+input[type="range"]::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  background: #fff;
+  cursor: pointer;
+  border: 2px solid #205375;
+  border-radius: 50%;
+}
+
+button {
+  background-color: rgba(0, 123, 255, 0.7); /* Transparent interactive buttons */
   color: white;
+  padding: 10px 20px;
   border: none;
   border-radius: 5px;
   cursor: pointer;
+  font-weight: bold;
 }
 
-.workout-form button:hover {
-  background-color: #4cae4c; /* Slightly darker shade */
+button:hover {
+  background-color: rgba(0, 123, 255, 0.9); /* Slightly darker on hover */
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+li {
+  background-color: rgba(255, 255, 255, 0.5); /* Slightly transparent list items */
+  margin-bottom: 10px;
+  padding: 10px;
+  border-radius: 5px;
 }

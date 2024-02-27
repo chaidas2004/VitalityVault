@@ -1,25 +1,21 @@
-import React from 'react';
-import { GoogleLogin } from 'react-google-login';
+// src/Login.js
+import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import app from './firebaseConfig'; 
 
+const auth = getAuth(app);
+const provider = new GoogleAuthProvider();
 
-function Login() {
- const responseGoogle = (response) => {
-   console.log(response);
- };
-
-
- return (
-   <div>
-     <GoogleLogin
-       clientId="879553115891-1omhk7b1rb3sglnt3b78uimvgr3ss0us.apps.googleusercontent.com"
-       buttonText="Log In"
-       onSuccess={responseGoogle}
-       onFailure={responseGoogle}
-       cookiePolicy={'single_host_origin'}
-     />
-   </div>
- );
-}
-
-
-export default Login;
+export const signInWithGooglePopup = async () => {
+  try {
+    const result = await signInWithPopup(auth, provider);
+   
+    const user = result.user;
+    console.log(user); 
+   
+    return user; // Optionally return user data or another value as needed
+  } catch (error) {
+   
+    console.error(error);
+    throw error; // Re-throw the error to be caught by the caller
+  }
+};
