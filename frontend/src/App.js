@@ -1,10 +1,6 @@
 import React from 'react';
 import './App.css';
 import './Dashboard.css';
-import Login from './Login';
-
-
-
 
 function App() {
 return (
@@ -16,7 +12,6 @@ return (
         <a href="#explore-workouts">Explore Workouts</a>
         <a href="#my-workouts">My Workouts</a>
         <a href="#create-workouts">Create Workouts</a>
-        <Login /> {/* Include the Login component here */}
       </nav>
     </header>
     <div className="content">
