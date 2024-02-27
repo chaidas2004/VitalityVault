@@ -3,10 +3,22 @@ const router = express.Router();
 
 const { workouts } = require('./data');
 
-// Get all workout plans
+// Modified for Name and Tag Search
 router.get('/', (req, res) => {
-  res.json(workouts);
+  const { tag, name } = req.query;
+  let filteredWorkouts = workouts;
+  if (tag) {
+      filteredWorkouts = filteredWorkouts.filter(workout => workout.tag === tag);
+  }
+  if (name) {
+      filteredWorkouts = filteredWorkouts.filter(workout => workout.name.toLowerCase().includes(name.toLowerCase()));
+  }
+  if(filteredWorkouts.length === 0) {
+      return res.status(404).send('No matching workouts found.');
+  }
+  res.json(filteredWorkouts);
 });
+
 
 // Get a single workout plan by ID
 router.get('/:id', (req, res) => {
