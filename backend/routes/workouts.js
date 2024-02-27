@@ -28,4 +28,20 @@ router.post('/', (req, res) => {
   res.status(201).json(newWorkout);
 });
 
+// Endpoint - search workout plans
+router.get('/search', (req, res) => {
+  const { tag, duration } = req.query;
+
+  // Filter workouts 
+  const filteredWorkouts = workouts.filter(workout => {
+      let matchesTag = true, matchesDuration = true;
+      if (tag) {
+          matchesTag = workout.tag === tag;
+      }
+      return matchesTag && matchesDuration;
+  });
+
+  res.json(filteredWorkouts);
+});
+
 module.exports = router;
