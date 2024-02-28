@@ -1,6 +1,6 @@
-// src/Login.js
+
 import { getAuth, signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
-import app from './firebaseConfig'; // Adjust this path as needed
+import app from './firebaseConfig'; 
 
 const auth = getAuth(app);
 const provider = new GoogleAuthProvider();

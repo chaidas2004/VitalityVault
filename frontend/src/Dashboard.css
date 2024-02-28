@@ -16,38 +16,38 @@ header {
 
 nav {
   display: flex;
-  justify-content: space-around; /* Adjust as needed for spacing */
+  justify-content: space-around; 
   flex-grow: 1;
 }
 
 nav a, .login-button a {
   text-decoration: none;
   color: #000;
-  padding: 10px 20px; /* Provides more space around the links */
+  padding: 10px 20px; 
 }
 
 .login-button {
-  /* Styles for login button, assuming you want it to stand out */
-  background-color: #007bff; /* Example background color */
+ 
+  background-color: #007bff; 
   border-radius: 5px;
-  color: white; /* Text color */
+  color: white; 
 }
 
 .content {
   display: flex;
-  justify-content: space-around; /* Evenly spaces the blocks horizontally */
-  align-items: center; /* Vertically aligns items if needed */
+  justify-content: space-around; 
+  align-items: center;
   margin-top: 20px;
-  flex-wrap: wrap; /* Allows blocks to wrap in smaller viewports */
+  flex-wrap: wrap; 
 }
 
 .block {
-  width: 100px; /* Adjust width as needed */
-  height: 100px; /* Adjust height as needed */
+  width: 100px; 
+  height: 100px; 
   background-color: #ddd;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 10px; /* Adds space around each block */
-  flex-grow: 1; /* Optional: Allows blocks to grow */
+  margin: 10px; 
+  flex-grow: 1; 
 }

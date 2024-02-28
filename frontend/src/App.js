@@ -1,6 +1,6 @@
-// src/App.js
+
 import React, { useState } from 'react';
-import { signInWithGooglePopup } from './Login'; // Adjust this import path as needed
+import { signInWithGooglePopup } from './Login'; 
 
 const App = () => {
   const [user, setUser] = useState(null);
@@ -8,7 +8,7 @@ const App = () => {
   const handleSignIn = async () => {
     try {
       const userResult = await signInWithGooglePopup();
-      setUser(userResult); // Update state with the signed-in user
+      setUser(userResult); 
     } catch (error) {
       console.error("Error during sign-in:", error);
     }
