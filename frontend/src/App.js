@@ -1,25 +1,21 @@
+import React from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import Dashboard from './Dashboard';
+import WorkoutLog from './WorkoutLog';
+import WorkoutSearch from './WorkoutSearch'; 
 
-import React, { useState } from 'react';
-import { signInWithGooglePopup } from './Login'; 
-
-const App = () => {
-  const [user, setUser] = useState(null);
-
-  const handleSignIn = async () => {
-    try {
-      const userResult = await signInWithGooglePopup();
-      setUser(userResult); 
-    } catch (error) {
-      console.error("Error during sign-in:", error);
-    }
-  };
-
+function App() {
   return (
-    <div>
-      <button onClick={handleSignIn}>Sign In with Google</button>
-      {user && <div>Signed in as: {user.displayName}</div>}
-    </div>
+    <Router>
+      <div>
+        <Routes>
+          <Route path="/" element={<Dashboard />} />
+          <Route path="/create" element={<WorkoutLog />} />
+          <Route path="/explore" element={<WorkoutSearch />} /> {}
+        </Routes>
+      </div>
+    </Router>
   );
-};
+}
 
 export default App;
