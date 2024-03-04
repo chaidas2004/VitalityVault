@@ -1,0 +1,36 @@
+.login-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center; 
+  }
+  
+  .input-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px; 
+    margin-bottom: 10px; 
+  }
+  
+  .input-container input {
+    width: 250px; 
+    padding: 8px;
+  }
+  
+  .button-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: absolute;
+    top: 5px;
+    right: 20px;
+  }
+  
+  .button-container button {
+    width: 150px; /* Adjust button width as needed */
+    padding: 8px; /* Adjust button padding */
+    font-size: 10px; /* Adjust font size */
+    background-color: #000000; /* Black background */
+    color: #FFFFFF; /* White font color */
+    margin-bottom: 5px; /* Spacing between buttons */
+  }
+  

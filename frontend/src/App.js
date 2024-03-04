@@ -1,35 +1,21 @@
 import React from 'react';
-import './App.css';
-import './Dashboard.css';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import Dashboard from './Dashboard';
+import WorkoutLog from './WorkoutLog';
+import WorkoutSearch from './WorkoutSearch'; 
 
 function App() {
-return (
-  <div className="App">
-    <header className="App-header">
-      <h1>VitalityVault</h1>
-      <nav>
-        <a href="#home">Home</a>
-        <a href="#explore-workouts">Explore Workouts</a>
-        <a href="#my-workouts">My Workouts</a>
-        <a href="#create-workouts">Create Workouts</a>
-      </nav>
-    </header>
-    <div className="content">
-      <div className="block"></div>
-      <div className="block"></div>
-      <div className="block"></div>
-    </div>
-  </div>
-);
+  return (
+    <Router>
+      <div>
+        <Routes>
+          <Route path="/" element={<Dashboard />} />
+          <Route path="/create" element={<WorkoutLog />} />
+          <Route path="/explore" element={<WorkoutSearch />} /> {}
+        </Routes>
+      </div>
+    </Router>
+  );
 }
 
-
-
-
 export default App;
-
-
-
-
-
-

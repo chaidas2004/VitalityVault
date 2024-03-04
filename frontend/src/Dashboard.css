@@ -1,53 +1,98 @@
-.dashboard {
-  text-align: center;
+:root {
+  --primary-color: #000000; /* Black */
+  --secondary-color: #FFFFFF; /* White */
+  --accent-color: #da2121; /* Accent color */
+}
+
+body {
+  font-family: 'Poppins', sans-serif;
+  background-color: var(--primary-color); /* Black background */
+  color: var(--secondary-color); /* White font color */
+  margin: 0;
+  padding: 0;
 }
 
 header {
-  display: flex;
-  justify-content: space-between;
-  padding: 20px;
-  background-color: #f5f5f5;
+  background-color: rgba(0, 0, 0, 0.95); /* Transparent black background */
+  padding: 10px;
+  color: var(--secondary-color); /* White font color */
+  text-align: center;
 }
 
 .nav-wrapper {
   display: flex;
+  justify-content: space-between;
   align-items: center;
+  padding: 10px;
 }
 
-nav {
-  display: flex;
-  justify-content: space-around; /* Adjust as needed for spacing */
-  flex-grow: 1;
-}
-
-nav a, .login-button a {
+nav a {
+  color: var(--secondary-color); /* White font color */
   text-decoration: none;
-  color: #000;
-  padding: 10px 20px; /* Provides more space around the links */
+  margin-right: 20px;
+  transition: color 0.3s ease;
+  font-weight: 300; /* Thin font weight */
 }
 
-.login-button {
-  /* Styles for login button, assuming you want it to stand out */
-  background-color: #007bff; /* Example background color */
-  border-radius: 5px;
-  color: white; /* Text color */
-}
-
-.content {
-  display: flex;
-  justify-content: space-around; /* Evenly spaces the blocks horizontally */
-  align-items: center; /* Vertically aligns items if needed */
-  margin-top: 20px;
-  flex-wrap: wrap; /* Allows blocks to wrap in smaller viewports */
+nav a:hover {
+  color: var(--accent-color); /* Accent color on hover */
 }
 
 .block {
-  width: 100px; /* Adjust width as needed */
-  height: 100px; /* Adjust height as needed */
-  background-color: #ddd;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 10px; /* Adds space around each block */
-  flex-grow: 1; /* Optional: Allows blocks to grow */
+  background-color: rgba(0, 0, 0, 0.95); /* Transparent black background */
+  color: var(--secondary-color); /* White font color */
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.login-button button {
+  background-color: #CCCCCC; /* Silver background */
+  color: #000000; /* Black font color */
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  font-weight: 300; /* Thin font weight */
+}
+
+.login-button button:hover {
+  background-color: var(--accent-color); /* Accent color on hover */
+}
+
+.half-page {
+  position: absolute;
+  top: 0;
+  left: -50%;
+  width: 50%;
+  height: 100%;
+  transition: left 0.5s ease-in-out;
+  background-color: rgba(0, 0, 0, 0.95); /* Transparent white background */
+  z-index: 1;
+}
+
+.slide-in {
+  left: 0;
+}
+
+.slide-out {
+  left: -50%;
+}
+
+.close-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: rgba(255, 255, 255, 0.8); /* Transparent white background */
+  border: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  color: #ffffff; /* Black font color */
+}
+
+.close-button:hover {
+  background-color: rgba(255, 255, 255, 0.9); /* Lighter transparent white background on hover */
 }
