@@ -1,73 +1,103 @@
-
-.dashboard {
-  background-color: #f8f9fa;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+:root {
+  --primary-color: #333333; 
+  --secondary-color: #CCCCCC;
+  --accent-color: #da2121; 
 }
 
-.header {
-  background-color: #007bff;
-  color: #fff;
-  padding: 20px;
-  border-radius: 10px 10px 0 0;
-}
-
-.title {
-  font-size: 32px;
+body {
+  font-family: 'Poppins', sans-serif;
+  background-color: rgba(255, 255, 255, 0.95); /* Transparent white background */
+  color: #333333; 
   margin: 0;
+  padding: 0;
+}
+
+header {
+  background-color: var(--primary-color); 
+  padding: 20px;
+  color: #FFFFFF; 
+  text-align: center;
+}
+
+h1 {
+  font-size: 24px;
 }
 
 .nav-wrapper {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding: 10px 20px;
 }
 
-.nav-links {
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-}
-
-.nav-links li {
-  display: inline;
-  margin-right: 20px;
-}
-
-.nav-links li:last-child {
-  margin-right: 0;
-}
-
-.link {
-  color: #fff;
+nav a {
+  color: #FFFFFF; 
   text-decoration: none;
-  font-size: 18px;
+  margin-right: 20px;
+  transition: color 0.3s ease;
 }
 
-.link:hover {
-  text-decoration: underline;
+nav a:hover {
+  color: var(--accent-color); 
 }
 
 .content {
-  margin-top: 20px;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  grid-gap: 20px;
-}
-
-.block {
-  background-color: #fff;
-  border-radius: 10px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   padding: 20px;
 }
 
-.block h2 {
-  font-size: 24px;
-  margin-top: 0;
+.block {
+  background-color: rgba(255, 255, 255, 0.95); /* Transparent white background */
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  margin-bottom: 20px;
 }
 
-.block p {
-  font-size: 16px;
+.login-button button {
+  background-color: var(--secondary-color); 
+  color: #FFFFFF; 
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.login-button button:hover {
+  background-color: var(--accent-color); 
+}
+
+.half-page {
+  position: absolute;
+  top: 0;
+  left: -50%;
+  width: 50%;
+  height: 100%;
+  transition: left 0.5s ease-in-out;
+  background-color: rgba(255, 255, 255, 0.95);
+  z-index: 1;
+}
+
+.slide-in {
+  left: 0;
+}
+
+.slide-out {
+  left: -50%;
+}
+
+.close-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: rgba(255, 255, 255, 0.8);
+  border: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  color: #333333; 
+}
+
+.close-button:hover {
+  background-color: rgba(255, 255, 255, 0.9);
 }

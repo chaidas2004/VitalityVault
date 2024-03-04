@@ -1,0 +1,55 @@
+.stopwatch-block {
+    text-align: center;
+    margin-top: 20px;
+  }
+  
+  .stopwatch-time {
+    font-size: 24px;
+    margin-bottom: 10px;
+  }
+  
+  .fade-in {
+    animation: fadeIn 1s ease-in-out;
+  }
+  
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateX(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+  
+  .stopwatch-controls {
+    margin-top: 20px;
+  }
+  
+  .start-button,
+  .complete-button,
+  .reset-button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-right: 10px;
+  }
+  
+  .complete-button {
+    background-color: #f44336;
+  }
+  
+  .reset-button {
+    background-color: #008CBA;
+  }
+  
+  .start-button:hover,
+  .complete-button:hover,
+  .reset-button:hover {
+    opacity: 0.8;
+  }
+  

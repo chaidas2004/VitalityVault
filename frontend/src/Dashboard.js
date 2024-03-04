@@ -1,16 +1,18 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import './Dashboard.css';
-import { signInWithGooglePopup } from './Login'; 
+import StopWatch from './StopWatch';
+import Login from './Login'; 
 
 const Dashboard = () => {
-  
-  const handleLogin = async () => {
-    try {
-      await signInWithGooglePopup(); // Call signInWithGooglePopup function on the login button click
-    } catch (error) {
-      console.error('Error during sign-in with Google:', error);
-    }
+  const [showUserInformation, setShowUserInformation] = useState(false);
+
+  const toggleUserInformation = () => {
+    setShowUserInformation(prevState => !prevState);
+  };
+
+  const closeUserInformation = () => {
+    setShowUserInformation(false);
   };
 
   return (
@@ -19,20 +21,24 @@ const Dashboard = () => {
         <h1>VitalityVault</h1>
         <div className="nav-wrapper">
           <nav>
-            <Link to="/">Home</Link>
+            <Link to="/" onClick={toggleUserInformation}>Recent Workout</Link>
             <Link to="/explore">Explore Workouts</Link> {}
             <Link to="/my-workouts">My Workouts</Link>
             <Link to="/create">Create Workout</Link>
           </nav>
           <div className="login-button">
-            <button onClick={handleLogin}>Login</button> {}
+            <Login />
           </div>
         </div>
       </header>
-      <div className="content">
-        <div className="block"></div>
-        <div className="block"></div>
-        <div className="block"></div>
+      <div className={`half-page ${showUserInformation ? 'slide-in' : 'slide-out'}`}>
+        <div className="content">
+          <h2>Workout Summary</h2>
+          {}
+          {}
+          <button className="close-button" onClick={closeUserInformation}>Close</button>
+        </div>
+        <StopWatch />
       </div>
     </div>
   );
