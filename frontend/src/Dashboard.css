@@ -1,21 +1,21 @@
 :root {
-  --primary-color: #000000; /* Black */
-  --secondary-color: #FFFFFF; /* White */
-  --accent-color: #da2121; /* Accent color */
+  --primary-color: rgba(255, 0, 0, 0.1); 
+  --secondary-color: #000000; 
+  --accent-color: #FFFFFF; 
 }
 
 body {
-  font-family: 'Poppins', sans-serif;
-  background-color: var(--primary-color); /* Black background */
-  color: var(--secondary-color); /* White font color */
+  font-family: 'Roboto', sans-serif;
+  background-color: var(--primary-color); 
+  color: var(--secondary-color); 
   margin: 0;
   padding: 0;
 }
 
 header {
-  background-color: rgba(0, 0, 0, 0.95); /* Transparent black background */
+  background-color: rgba(0, 0, 0, 0.9); 
   padding: 10px;
-  color: var(--secondary-color); /* White font color */
+  color: var(--accent-color); 
   text-align: center;
 }
 
@@ -27,39 +27,38 @@ header {
 }
 
 nav a {
-  color: var(--secondary-color); /* White font color */
+  color: var(--accent-color); 
   text-decoration: none;
   margin-right: 20px;
   transition: color 0.3s ease;
-  font-weight: 300; /* Thin font weight */
+  font-weight: 300; 
 }
 
 nav a:hover {
-  color: var(--accent-color); /* Accent color on hover */
+  color: var(--primary-color); 
 }
 
 .block {
-  background-color: rgba(0, 0, 0, 0.95); /* Transparent black background */
-  color: var(--secondary-color); /* White font color */
-  border-radius: 10px;
+  background-color: rgba(0, 0, 0, 0.9); 
+  color: var(--accent-color); 
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   padding: 20px;
   margin-bottom: 20px;
 }
 
 .login-button button {
-  background-color: #CCCCCC; /* Silver background */
-  color: #000000; /* Black font color */
+  background-color: var(--secondary-color);
+  color: var(--accent-color); 
   border: none;
   padding: 10px 20px;
   border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.3s ease;
-  font-weight: 300; /* Thin font weight */
+  font-weight: 300; 
 }
 
 .login-button button:hover {
-  background-color: var(--accent-color); /* Accent color on hover */
+  background-color: rgba(255, 255, 255, 0.1); 
 }
 
 .half-page {
@@ -69,7 +68,7 @@ nav a:hover {
   width: 50%;
   height: 100%;
   transition: left 0.5s ease-in-out;
-  background-color: rgba(0, 0, 0, 0.95); /* Transparent white background */
+  background-color: rgba(0, 0, 0, 0.9); 
   z-index: 1;
 }
 
@@ -85,14 +84,30 @@ nav a:hover {
   position: absolute;
   top: 10px;
   right: 10px;
-  background-color: rgba(255, 255, 255, 0.8); /* Transparent white background */
+  background-color: rgba(255, 255, 255, 0.1); 
   border: none;
   padding: 5px 10px;
   border-radius: 5px;
   cursor: pointer;
-  color: #ffffff; /* Black font color */
+  color: var(--accent-color); 
 }
 
 .close-button:hover {
-  background-color: rgba(255, 255, 255, 0.9); /* Lighter transparent white background on hover */
+  background-color: rgba(255, 255, 255, 0.2); 
+}
+
+.stopwatch-button {
+  background-color: var(--secondary-color); 
+  color: var(--accent-color);
+  border: 2px solid var(--accent-color); 
+  padding: 8px 16px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  font-weight: 300;
+}
+
+.stopwatch-button:hover {
+  background-color: rgba(255, 255, 255, 0.1); 
+  color: var(--primary-color); 
 }

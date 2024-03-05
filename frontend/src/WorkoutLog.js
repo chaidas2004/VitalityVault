@@ -1,14 +1,17 @@
 import React, { useState } from 'react';
-import './WorkoutLog.css'
-// Sample exercise library data
+import './WorkoutLog.css';
+import { useNavigate } from 'react-router-dom';
+
+
 const exerciseLibrary = [
   { name: 'Squats', description: 'A compound exercise that targets the muscles of the lower body.', sets: 3, reps: 10 },
   { name: 'Push-ups', description: 'A bodyweight exercise that targets the muscles of the chest, shoulders, and arms.', sets: 3, reps: 12 },
   { name: 'Deadlifts', description: 'A compound exercise that targets the muscles of the lower back, hamstrings, and glutes.', sets: 3, reps: 8 },
-  // Add more exercises as needed
+ 
 ];
 
 const WorkoutLog = () => {
+  const navigate = useNavigate(); // Initialize useNavigate hook
   const [workoutPlan, setWorkoutPlan] = useState({
     name: '',
     tag: '',
@@ -58,6 +61,14 @@ const WorkoutLog = () => {
   const handleExerciseSelect = (exercise) => {
     setSelectedExercise(exercise);
     setExerciseDetails({ ...exercise });
+  };
+
+  const handleCreateWorkout = () => {
+    // Save workout plan to local storage
+    localStorage.setItem('workoutPlan', JSON.stringify(workoutPlan));
+
+    // Navigate to My Workouts page
+    navigate('/my-workouts');
   };
 
   return (
@@ -142,6 +153,11 @@ const WorkoutLog = () => {
         {validationError && <p>{validationError}</p>}
 
         <button type="button" onClick={handleAddExercise}>Add Exercise</button>
+
+        {}
+        {workoutPlan.exercises.length > 0 && (
+          <button type="button" onClick={handleCreateWorkout}>Create Workout</button>
+        )}
       </form>
 
       <div>
