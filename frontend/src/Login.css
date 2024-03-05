@@ -26,11 +26,11 @@
   }
   
   .button-container button {
-    width: 150px; /* Adjust button width as needed */
-    padding: 8px; /* Adjust button padding */
-    font-size: 10px; /* Adjust font size */
-    background-color: #000000; /* Black background */
-    color: #FFFFFF; /* White font color */
-    margin-bottom: 5px; /* Spacing between buttons */
+    width: 150px; 
+    padding: 8px; 
+    font-size: 10px; 
+    background-color: #000000; 
+    color: #FFFFFF;
+    margin-bottom: 5px; 
   }
   

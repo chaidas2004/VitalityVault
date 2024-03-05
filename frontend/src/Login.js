@@ -11,7 +11,7 @@ const Login = () => {
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
-      setUser(user);
+      setUser(user); 
     });
 
     return () => unsubscribe();
@@ -45,6 +45,7 @@ const Login = () => {
       <div className="login-container">
         {user ? (
           <div className="button-container">
+            <p>Hello {user.displayName}</p>
             <button onClick={logOut}>Log Out</button>
           </div>
         ) : (
