@@ -1,21 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import { getAuth, onAuthStateChanged, signInWithPopup, signOut } from 'firebase/auth';
-import { GoogleAuthProvider } from 'firebase/auth';
-import app from './firebaseConfig';
+import { onAuthStateChanged, signInWithPopup, signOut } from 'firebase/auth';
+import { auth, googleProvider } from "./config/firebase"; 
 import './Login.css';
 
 const Login = () => {
   const [user, setUser] = useState(null);
-  const auth = getAuth(app);
-  const googleProvider = new GoogleAuthProvider();
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
-      setUser(user); 
+      setUser(user);
     });
 
-    return () => unsubscribe();
-  }, [auth]);
+    return () => unsubscribe(); 
+  }, []);
 
   const signInWithGoogle = async () => {
     try {
@@ -27,7 +24,6 @@ const Login = () => {
       } else {
         console.error('Error during sign-in with Google:', err);
       }
-      throw err;
     }
   };
 
@@ -45,7 +41,7 @@ const Login = () => {
       <div className="login-container">
         {user ? (
           <div className="button-container">
-            <p>Hello {user.displayName}</p>
+            <p>Hello, {user.displayName || "User"}</p> {}
             <button onClick={logOut}>Log Out</button>
           </div>
         ) : (
