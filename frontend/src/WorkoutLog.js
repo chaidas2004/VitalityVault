@@ -1,14 +1,26 @@
 import React, { useState } from 'react';
 import './WorkoutLog.css';
 import { useNavigate } from 'react-router-dom';
+import { 
+  collection,
+  doc,
+  getDocs,
+  addDoc,
+  updateDoc,
+  arrayUnion, 
+} from 'firebase/firestore';
+import { auth, db } from './config/firebase.js';
 
+const exercisesCol = collection(db, 'exercises') // MAYBE EXERCISES COLLECTION NOT NECESSARY
+const workoutsCol = collection(db, 'workouts')
+const userRef = doc(db, 'users', auth.currentUser)
+const exerciseLibrary = getDocs(exercisesCol);
 
-const exerciseLibrary = [
-  { name: 'Squats', description: 'A compound exercise that targets the muscles of the lower body.', sets: 3, reps: 10 },
-  { name: 'Push-ups', description: 'A bodyweight exercise that targets the muscles of the chest, shoulders, and arms.', sets: 3, reps: 12 },
-  { name: 'Deadlifts', description: 'A compound exercise that targets the muscles of the lower back, hamstrings, and glutes.', sets: 3, reps: 8 },
- 
-];
+//[
+//  { name: 'Squats', description: 'A compound exercise that targets the muscles of the lower body.', sets: 3, reps: 10 },
+//  { name: 'Push-ups', description: 'A bodyweight exercise that targets the muscles of the chest, shoulders, and arms.', sets: 3, reps: 12 },
+//  { name: 'Deadlifts', description: 'A compound exercise that targets the muscles of the lower back, hamstrings, and glutes.', sets: 3, reps: 8 },
+//];
 
 const WorkoutLog = () => {
   const navigate = useNavigate(); // Initialize useNavigate hook
@@ -66,6 +78,14 @@ const WorkoutLog = () => {
   const handleCreateWorkout = () => {
     // Save workout plan to local storage
     localStorage.setItem('workoutPlan', JSON.stringify(workoutPlan));
+
+    // Save workout plan to workouts collection
+    const newWorkout = addDoc(workoutsCol, workoutPlan)
+
+    // Save workout plan to users' collection (need await?)
+    updateDoc(userRef, {
+      workouts: arrayUnion(newWorkout)
+    })
 
     // Navigate to My Workouts page
     navigate('/my-workouts');
