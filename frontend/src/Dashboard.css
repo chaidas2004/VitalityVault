@@ -1,7 +1,12 @@
 :root {
-  --primary-color: rgba(255, 0, 0, 0.1); 
-  --secondary-color: #000000; 
-  --accent-color: #FFFFFF; 
+  --primary-color: #2196F3; 
+  --secondary-color: #9C27B0;
+  --tertiary-color: #CDDC39;
+  --background-color: #F5F5F5;
+  --text-color: #212121;
+  --secondary-text-color: #757575;
+  --detail-color: #BDBDBD;
+  --accent-color: #FF5722;
 }
 
 body {
@@ -13,21 +18,32 @@ body {
 }
 
 header {
-  background-color: rgba(0, 0, 0, 0.9); 
-  padding: 10px;
-  color: var(--accent-color); 
+  background-color: var(--primary-color); 
+  padding: 20px;
+  color: var(--text-color); 
   text-align: center;
 }
 
-.nav-wrapper {
+
+.main-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px;
 }
 
-nav a {
-  color: var(--accent-color); 
+.main-header .nav-wrapper{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.nav-wrapper{
+  display: inline-block;
+  align-items: center;
+}
+
+.nav-wrapper nav a {
+  color: var(--text-color); 
   text-decoration: none;
   margin-right: 20px;
   transition: color 0.3s ease;
@@ -35,16 +51,20 @@ nav a {
 }
 
 nav a:hover {
+  color: var(--secondary-color); 
+}
+
+nav a.active {
   color: var(--primary-color); 
 }
 
-.block {
-  background-color: rgba(0, 0, 0, 0.9); 
-  color: var(--accent-color); 
+/* .block {
+  background-color: var(--background-color); 
+  color: var(--background-color); 
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   padding: 20px;
   margin-bottom: 20px;
-}
+} */
 
 .login-button button {
   background-color: var(--secondary-color);

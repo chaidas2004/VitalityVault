@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import Dashboard from './Dashboard';
 
 const WorkoutSearch = () => {
   const [workouts, setWorkouts] = useState([]);
@@ -45,6 +46,8 @@ const WorkoutSearch = () => {
   });
 
   return (
+    <>
+    <Dashboard />
     <div>
       <h2>Workout Search and Filtering</h2>
       <input
@@ -75,6 +78,7 @@ const WorkoutSearch = () => {
         ))}
       </ul>
     </div>
+    </>
   );
 };
 

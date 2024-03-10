@@ -17,20 +17,20 @@ const Dashboard = () => {
 
   return (
     <div className="dashboard">
-      <header>
-        <h1>VitalityVault</h1>
+      <header className="main-header">
+        <h1 id="main-title">VitalityVault</h1>
         <div className="nav-wrapper">
           <nav>
-            <Link to="/" onClick={toggleUserInformation}>Recent Workout</Link>
-            <Link to="/explore">Explore Workouts</Link> {}
             <Link to="/my-workouts">My Workouts</Link>
+            <Link to="/explore">Explore Workouts</Link>
             <Link to="/create">Create Workout</Link>
           </nav>
-          <div className="login-button">
-            <Login />
-          </div>
+        </div>
+        <div className="login-button">
+          <Login />
         </div>
       </header>
+
       <div className={`half-page ${showUserInformation ? 'slide-in' : 'slide-out'}`}>
         <div className="content">
           <h2>Workout Summary</h2>
