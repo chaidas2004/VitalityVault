@@ -1,10 +1,15 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { signOut } from 'firebase/auth';
+import { auth } from './config/firebase'
+import { useUser } from './AuthContext'
 import './Dashboard.css';
 import StopWatch from './StopWatch';
 import Login from './Login'; 
 
 const Dashboard = () => {
+  const { currentUser } = useUser();
+  const navigate = useNavigate();
   const [showUserInformation, setShowUserInformation] = useState(false);
 
   const toggleUserInformation = () => {
@@ -15,6 +20,14 @@ const Dashboard = () => {
     setShowUserInformation(false);
   };
 
+  const logOut = async () => {
+    try {
+      await signOut(auth);
+      navigate('/');
+    } catch (err) {
+      console.error(err);
+    }
+  };
   return (
     <div className="dashboard">
       <header className="main-header">
@@ -25,9 +38,11 @@ const Dashboard = () => {
             <Link to="/explore">Explore Workouts</Link>
             <Link to="/create">Create Workout</Link>
           </nav>
-        </div>
-        <div className="login-button">
-          <Login />
+          <div className="button-container">
+            <p>Hello, {currentUser.displayName || "User"}</p>
+            <button onClick={logOut}>Log Out</button>
+            <redirect to="/" />
+      </div>
         </div>
       </header>
 

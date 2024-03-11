@@ -18,6 +18,9 @@ import Dashboard from './Dashboard.js';
 
 const WorkoutLog = () => {
 
+//for navigating to different routes
+const navigate = useNavigate();
+
 //For New user logged workout:
 const [newWorkoutTitle, setNewWorkoutTitle] = useState("");
 const [newWorkoutTags, setNewWorkoutTags] = useState([]);
@@ -33,6 +36,9 @@ const [updatedReps, setUpdatedReps] = useState(0);
 const [updatedSets, setUpdatedSets] = useState(0);
 const [updatedIntensity, setUpdatedIntensity] = useState(0);
 
+//For workouts to be public or not
+const [isPublic, setIsPublic] = useState(false);
+
 //database collections
 const workoutsCol = collection(db, "workouts");
 const exercisesCol = collection(db, "exercises");
@@ -42,6 +48,10 @@ const [showInput, setShowInput] = useState(false);
 const toggleInput = () => {
   setShowInput(!showInput);
 };
+
+const handleSetIsPublic = () => {
+  setIsPublic((prevValue) => !prevValue)
+}
 
 //get all the exercises
 useEffect(() => {
@@ -93,9 +103,10 @@ const onSubmitWorkout = async () => {
       name: newWorkoutTitle, 
       tags: newWorkoutTags,
       exercises: exercises,
-      userId: auth?.currentUser?.uid
+      userId: auth?.currentUser?.uid,
+      public: isPublic
     });
-
+    navigate('/my-workouts')
   } catch (err) {
     console.error(err);
   }
@@ -123,6 +134,17 @@ return (
           onChange={(e) => setNewWorkoutTags(e.target.value)}
           required
         />
+      </div>
+      <div>
+        <label>
+          Set Public
+          <input
+            type="checkbox"
+            checked={isPublic}
+            onChange={handleSetIsPublic}
+          />
+        </label>
+        <p>Other users {isPublic ? 'will ' : 'won\'t'} be able to view your workout</p>
       </div>
       <h3>Exercises</h3>
       {exercises.map((inWorkout, index) => (

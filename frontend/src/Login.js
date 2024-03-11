@@ -1,25 +1,23 @@
 import React, { useState, useEffect } from 'react';
-import { onAuthStateChanged, signInWithPopup, signOut } from 'firebase/auth';
+import { onAuthStateChanged, signInWithPopup } from 'firebase/auth';
 import { auth, googleProvider } from "./config/firebase"; 
-import { Link, Navigate, Route, Routes, redirect } from 'react-router-dom';
+import { useNavigate, Link, Navigate, Route, Routes, redirect } from 'react-router-dom';
+import { useUser } from './AuthContext'
 import MyWorkouts from './MyWorkouts'; // Import MyWorkouts component
 import './Login.css';
 
 const Login = () => {
-  const [user, setUser] = useState(null);
+  const { currentUser } = useUser();
+  const navigate = useNavigate();
 
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      setUser(user);
-    });
-
-    return () => unsubscribe(); 
-  }, []);
+  if (currentUser) {
+    navigate('/dashboard')
+  }
 
   const signInWithGoogle = async () => {
     try {
       const result = await signInWithPopup(auth, googleProvider);
-      setUser(result.user);
+      navigate('/dashboard')
     } catch (err) {
       if (err.code === 'auth/popup-closed-by-user') {
         console.error('User closed the sign-in popup');
@@ -29,27 +27,11 @@ const Login = () => {
     }
   };
 
-  const logOut = async () => {
-    try {
-      await signOut(auth);
-      setUser(null);
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
   return (
     <>
       <div className="login-container">
-        {user ? (
-          <div className="button-container">
-            <p>Hello, {user.displayName || "User"}</p>
-            <button onClick={logOut}>Log Out</button>
-            <redirect to="/my-workouts" />
-          </div>
-        ) : (
+        {
           <>
-          <redirect to="/" />
           <header className="welcome-header">
             <h1 id='main-title'>VitalityVault</h1>
             <div className="button-container">
@@ -62,7 +44,7 @@ const Login = () => {
             <p>Your favorite workout tracker....</p>
           </body>
           </>
-        )}
+        }
       </div>
     </>
   );
