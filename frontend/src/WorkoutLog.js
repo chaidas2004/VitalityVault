@@ -15,14 +15,8 @@ import { auth, db } from './config/firebase.js';
 import { Auth } from './components/auth';
 import Dashboard from './Dashboard.js';
 
-// [
-//  { name: 'Squats', description: 'A compound exercise that targets the muscles of the lower body.', sets: 3, reps: 10 },
-//  { name: 'Push-ups', description: 'A bodyweight exercise that targets the muscles of the chest, shoulders, and arms.', sets: 3, reps: 12 },
-//  { name: 'Deadlifts', description: 'A compound exercise that targets the muscles of the lower back, hamstrings, and glutes.', sets: 3, reps: 8 },
-// ];
 
 const WorkoutLog = () => {
-
 
 //For New user logged workout:
 const [newWorkoutTitle, setNewWorkoutTitle] = useState("");
@@ -48,19 +42,6 @@ const [showInput, setShowInput] = useState(false);
 const toggleInput = () => {
   setShowInput(!showInput);
 };
-
-// const getWorkoutList = async () => {
-//   try {
-//     const data = await getDocs(exercisesCol);
-//     const filteredData = data.docs.map((doc) => ({
-//       ...doc.data(), 
-//       id: doc.id,
-//     }));
-//     setExerciseList(filteredData);
-//   } catch (err) {
-//     console.error(err);
-//   }
-// };
 
 //get all the exercises
 useEffect(() => {
@@ -130,8 +111,7 @@ return (
         <label htmlFor="name">Workout Plan Name:</label>
         <input
           type="text"
-          // id="name"
-          // value={workoutPlan.name}
+
           onChange={(e) => setNewWorkoutTitle(e.target.value)}
           required
         />
@@ -140,8 +120,6 @@ return (
         <label htmlFor="tag">Muscle Group Tag:</label>
         <input
           type="text"
-          // id="tag"
-          // value={workoutPlan.tag}
           onChange={(e) => setNewWorkoutTags(e.target.value)}
           required
         />
@@ -190,7 +168,6 @@ return (
             <label htmlFor="sets">Sets:</label>
             <input
               type="number"
-              //value= {exerciseDetails.sets}
               onChange={(e) => setUpdatedSets(e.target.value)}
               required
             />
@@ -199,7 +176,7 @@ return (
             <label htmlFor="reps">Reps:</label>
             <input
               type="number"
-              // value={exerciseDetails.reps}
+
               onChange={(e) => setUpdatedReps(e.target.value)}
               required
             />
