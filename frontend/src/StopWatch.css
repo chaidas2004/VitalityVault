@@ -30,7 +30,7 @@
   .start-button,
   .complete-button,
   .reset-button {
-    background-color: #4CAF50;
+    background-color: #000000;
     color: white;
     padding: 10px 20px;
     border: none;
@@ -44,7 +44,7 @@
   }
   
   .reset-button {
-    background-color: #008CBA;
+    background-color: #000000;
   }
   
   .start-button:hover,
