@@ -7,6 +7,7 @@ import {
 } from 'firebase/firestore';
 import { db } from './config/firebase'
 import { useUser } from './AuthContext'
+import Header from './Header'
 
 const MyWorkouts = () => {
   const { currentUser } = useUser();
@@ -31,6 +32,7 @@ const MyWorkouts = () => {
 
   return (
     <div>
+      <Header/>
       <h2>My Workouts</h2> {}
       {savedWorkouts.length === 0 ? (
         <p>No workouts saved yet.</p>

@@ -13,7 +13,7 @@ import {
 } from 'firebase/firestore';
 import { auth, db } from './config/firebase.js';
 import { Auth } from './components/auth';
-import Dashboard from './Dashboard.js';
+import Header from './Header.js';
 
 
 const WorkoutLog = () => {
@@ -115,7 +115,7 @@ const onSubmitWorkout = async () => {
 
 return (
   <>
-    <Dashboard />
+    <Header />
     <div className='newWorkout'>
       <h2> Plan Logging</h2>
       <div>

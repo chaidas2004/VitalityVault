@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Dashboard from './Dashboard';
+import Dashboard from './Header';
 
 const WorkoutSearch = () => {
   const [workouts, setWorkouts] = useState([]);
