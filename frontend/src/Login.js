@@ -1,23 +1,26 @@
-import React, { useState, useEffect } from 'react';
-import { onAuthStateChanged, signInWithPopup } from 'firebase/auth';
-import { auth, googleProvider } from "./config/firebase"; 
-import { useNavigate, Link, Navigate, Route, Routes, redirect } from 'react-router-dom';
-import { useUser } from './AuthContext'
-import MyWorkouts from './MyWorkouts'; // Import MyWorkouts component
+import React, { useEffect } from 'react';
+import { signInWithPopup } from 'firebase/auth';
+import { auth, googleProvider } from "./config/firebase";
+import { useNavigate } from 'react-router-dom';
+import { useUser } from './AuthContext';
 import './Login.css';
-
+import logoImage from './video/IMAGE.webp'; //Logo for VitalityVault
 const Login = () => {
   const { currentUser } = useUser();
   const navigate = useNavigate();
 
-  if (currentUser) {
-    navigate('/dashboard')
-  }
+  useEffect(() => {
+    if (currentUser) {
+      navigate('/dashboard');
+    }
+  }, [currentUser, navigate]);
 
   const signInWithGoogle = async () => {
     try {
-      const result = await signInWithPopup(auth, googleProvider);
-      navigate('/dashboard')
+      await signInWithPopup(auth, googleProvider);
+      if (!currentUser) {
+        navigate('/dashboard');
+      }
     } catch (err) {
       if (err.code === 'auth/popup-closed-by-user') {
         console.error('User closed the sign-in popup');
@@ -28,25 +31,17 @@ const Login = () => {
   };
 
   return (
-    <>
-      <div className="login-container">
-        {
-          <>
-          <header className="welcome-header">
-            <h1 id='main-title'>VitalityVault</h1>
-            <div className="button-container">
-              <button onClick={signInWithGoogle}>Sign In</button>
-            </div>
-          </header>
-          <body>
-            <h2>Welcome to...</h2>
-            <h1>VitalityVault</h1>
-            <p>Your favorite workout tracker....</p>
-          </body>
-          </>
-        }
+    <div className="login-container">
+      <div className="inner-container">
+        <img src={logoImage} alt="VitalityVault Logo" />
+        <header className="welcome-header">
+          <h1 id='main-title'>VitalityVault</h1>
+        </header>
+        <div className="button-container">
+          <button onClick={signInWithGoogle}>Sign In</button>
+        </div>
       </div>
-    </>
+    </div>
   );
 };
 
