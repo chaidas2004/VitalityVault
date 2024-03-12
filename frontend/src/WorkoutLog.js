@@ -14,7 +14,7 @@ import {
 import { auth, db } from './config/firebase.js';
 import { Auth } from './components/auth';
 import Header from './Header.js';
-
+ 
 
 const WorkoutLog = () => {
 
@@ -44,6 +44,11 @@ const workoutsCol = collection(db, "workouts");
 const exercisesCol = collection(db, "exercises");
 
 const [showInput, setShowInput] = useState(false);
+
+const handleBackToHomepage = () => {
+  navigate('/dashboard'); 
+};
+
 
 const toggleInput = () => {
   setShowInput(!showInput);
@@ -116,6 +121,7 @@ const onSubmitWorkout = async () => {
 return (
   <>
     <Header />
+    <button className="back-button" onClick={handleBackToHomepage}>Back to Homepage</button>
     <div className='newWorkout'>
       <h2> Plan Logging</h2>
       <div>

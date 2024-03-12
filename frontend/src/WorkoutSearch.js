@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Dashboard from './Header';
+import './WorkoutSearch.css';
+import { db } from './config/firebase';
 
 const WorkoutSearch = () => {
   const [workouts, setWorkouts] = useState([]);
@@ -10,7 +12,8 @@ const WorkoutSearch = () => {
   const [savedWorkouts, setSavedWorkouts] = useState([]);
   const navigate = useNavigate();
 
-  useEffect(() => {//sample static workouts till back end is implemented
+  useEffect(() => {
+    // Mock function to simulate fetching workouts from a database
     const fetchWorkouts = async () => {
       const staticWorkouts = [
         { id: 1, name: 'Leg Day', duration: 60, category: 'Strength' },
@@ -38,6 +41,10 @@ const WorkoutSearch = () => {
     navigate('/my-workouts');
   };
 
+  const handleBackToHomepage = () => {
+    navigate('/dashboard');
+  };
+
   const filteredWorkouts = workouts.filter((workout) => {
     const matchesSearchTerm = workout.name.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesDuration = !durationFilter || workout.duration === parseInt(durationFilter);
@@ -47,37 +54,38 @@ const WorkoutSearch = () => {
 
   return (
     <>
-    <Dashboard />
-    <div>
-      <h2>Workout Search and Filtering</h2>
-      <input
-        type="text"
-        placeholder="Search workouts"
-        value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)}
-      />
-      <select value={durationFilter} onChange={(e) => setDurationFilter(e.target.value)}>
-        <option value="">All Durations</option>
-        <option value="30">30 minutes</option>
-        <option value="45">45 minutes</option>
-        <option value="60">60 minutes</option>
-      </select>
-      <select value={categoryFilter} onChange={(e) => setCategoryFilter(e.target.value)}>
-        <option value="">All Categories</option>
-        <option value="Strength">Strength</option>
-        <option value="Cardio">Cardio</option>
-      </select>
-      <ul>
-        {filteredWorkouts.map((workout) => (
-          <li key={workout.id}>
-            <p>Name: {workout.name}</p>
-            <p>Duration: {workout.duration} minutes</p>
-            <p>Category: {workout.category}</p>
-            <button onClick={() => handleSaveWorkout(workout)}>Save Workout</button>
-          </li>
-        ))}
-      </ul>
-    </div>
+      <Dashboard />
+      <button className="back-button" onClick={handleBackToHomepage}>Back to Homepage</button>
+      <div>
+        <h2>Workout Search and Filtering</h2>
+        <input
+          type="text"
+          placeholder="Search workouts"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
+        <select value={durationFilter} onChange={(e) => setDurationFilter(e.target.value)}>
+          <option value="">All Durations</option>
+          <option value="30">30 minutes</option>
+          <option value="45">45 minutes</option>
+          <option value="60">60 minutes</option>
+        </select>
+        <select value={categoryFilter} onChange={(e) => setCategoryFilter(e.target.value)}>
+          <option value="">All Categories</option>
+          <option value="Strength">Strength</option>
+          <option value="Cardio">Cardio</option>
+        </select>
+        <ul>
+          {filteredWorkouts.map((workout) => (
+            <li key={workout.id}>
+              <p>Name: {workout.name}</p>
+              <p>Duration: {workout.duration} minutes</p>
+              <p>Category: {workout.category}</p>
+              <button onClick={() => handleSaveWorkout(workout)}>Save Workout</button>
+            </li>
+          ))}
+        </ul>
+      </div>
     </>
   );
 };
