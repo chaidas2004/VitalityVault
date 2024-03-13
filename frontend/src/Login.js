@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import { signInWithPopup } from 'firebase/auth';
 import { auth, googleProvider } from "./config/firebase";
-import Typewriter from 'typewriter-effect';
 import { useNavigate } from 'react-router-dom';
 import { useUser } from './AuthContext';
 import './Login.css';
@@ -33,15 +32,6 @@ const Login = () => {
 
   return (
     <div className="login-container">
-      <h1>Fitness made easy for
-        <Typewriter
-          options={{
-            strings: ['students','parents', 'athletes', 'beginners', 'you'],
-            autoStart: true,
-            loop: true
-          }}
-        />
-        </h1>
       <div className="inner-container">
         <img src={logoImage} alt="VitalityVault Logo" />
         <header className="welcome-header">
