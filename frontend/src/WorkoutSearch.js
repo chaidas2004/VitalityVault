@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import Dashboard from './Header';
 import { collection, query, where, getDocs } from 'firebase/firestore';
 import { db } from './config/firebase';
+import { doc, updateDoc, increment } from 'firebase/firestore'; 
 
 const WorkoutSearch = () => {
   const [workouts, setWorkouts] = useState([]);
@@ -13,7 +14,7 @@ const WorkoutSearch = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchPublicWorkouts = async () => {
+    const fetchWorkouts = async () => {
       const q = query(collection(db, "workouts"), where("public", "==", true));
       const querySnapshot = await getDocs(q);
       const workoutsData = querySnapshot.docs.map(doc => ({
@@ -22,7 +23,7 @@ const WorkoutSearch = () => {
       }));
       setWorkouts(workoutsData);
     };
-    fetchPublicWorkouts();
+    fetchWorkouts();
   }, []);
 
   useEffect(() => {
@@ -39,6 +40,27 @@ const WorkoutSearch = () => {
     setSavedWorkouts(updatedSavedWorkouts);
     navigate('/my-workouts');
   };
+
+  const handleLikeWorkout = async (workoutId) => {
+    console.log("Workout ID:", workoutId); 
+    console.log("Type of Workout ID:", typeof workoutId); 
+
+    const workoutIdStr = workoutId.toString();
+    console.log("Converted Workout ID to String:", workoutIdStr); 
+
+    const workoutRef = doc(db, 'workouts', workoutIdStr);
+    await updateDoc(workoutRef, {
+        likes: increment(1)
+    }).then(() => {
+    setWorkouts(workouts.map(workout => {
+      if (workout.id === workoutId) {
+        return { ...workout, likes: (workout.likes || 0) + 1 };
+      } else {
+        return workout;
+      }
+    }));
+  });
+};
 
   const filteredWorkouts = workouts.filter((workout) => 
     workout.name.toLowerCase().includes(searchTerm.toLowerCase())
@@ -67,6 +89,8 @@ const WorkoutSearch = () => {
                 </div>
             ))}
             <button onClick={() => handleSaveWorkout(workout)}>Save Workout</button>
+            <button onClick={() => handleLikeWorkout(workout.id)}>Like</button>
+            <span>{workout.likes || 0} Likes</span>
             </li>
           )) : <p>No public workouts found.</p>}
       </ul>
