@@ -1,9 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Dashboard from './Header';
-import { collection, query, where, getDocs } from 'firebase/firestore';
-import { db } from './config/firebase';
-import { doc, updateDoc, increment } from 'firebase/firestore'; 
+import { collection, 
+  query, 
+  where, 
+  getDocs, 
+  doc, 
+  updateDoc, 
+  increment, 
+  arrayUnion,
+  getDoc,
+  setDoc } from 'firebase/firestore';
+import { db, auth } from './config/firebase';
 
 const WorkoutSearch = () => {
   const [workouts, setWorkouts] = useState([]);
@@ -26,19 +34,33 @@ const WorkoutSearch = () => {
     fetchWorkouts();
   }, []);
 
-  useEffect(() => {
-    const savedWorkoutsString = localStorage.getItem('savedWorkouts');
-    if (savedWorkoutsString) {
-      const savedWorkoutsArray = JSON.parse(savedWorkoutsString);
-      setSavedWorkouts(savedWorkoutsArray);
-    }
-  }, []);
 
-  const handleSaveWorkout = (workout) => {
-    const updatedSavedWorkouts = [...savedWorkouts, workout];
-    localStorage.setItem('savedWorkouts', JSON.stringify(updatedSavedWorkouts));
-    setSavedWorkouts(updatedSavedWorkouts);
-    navigate('/my-workouts');
+  const handleSaveWorkout = async (workoutId) => {
+    if (!auth.currentUser) {
+      console.error("No user signed in!");
+      return;
+    }
+    const userRef = doc(db, 'users', auth.currentUser.uid);
+
+    try {
+      const docSnap = await getDoc(userRef);
+      if (!docSnap.exists()) {
+        // If the user document does not exist, create it with the workoutId in savedWorkouts
+        await setDoc(userRef, {
+          savedWorkouts: [workoutId],
+        });
+        console.log(`User document created and workout ${workoutId} saved.`);
+      } else {
+        // If the user document exists, update it by adding the workoutId to savedWorkouts
+        await updateDoc(userRef, {
+          savedWorkouts: arrayUnion(workoutId),
+        });
+        console.log(`Workout ${workoutId} saved successfully.`);
+      }
+      navigate('/my-workouts'); // Navigate to the My Workouts page after saving
+    } catch (err) {
+      console.error("Error saving workout:", err);
+    }
   };
 
   const handleLikeWorkout = async (workoutId) => {
@@ -88,7 +110,7 @@ const WorkoutSearch = () => {
                   <p>Sets: {exercise.sets}, Reps: {exercise.reps}, Intensity: {exercise.intensity}%</p>
                 </div>
             ))}
-            <button onClick={() => handleSaveWorkout(workout)}>Save Workout</button>
+            <button onClick={() => handleSaveWorkout(workout.id)}>Save Workout</button>
             <button onClick={() => handleLikeWorkout(workout.id)}>Like</button>
             <span>{workout.likes || 0} Likes</span>
             </li>

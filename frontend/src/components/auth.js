@@ -1,10 +1,13 @@
 import { useState } from "react";
-import { auth, googleProvider } from "../config/firebase";
+import { useNavigate } from 'react-router-dom';
+import { auth, googleProvider, db } from "../config/firebase";
 import { createUserWithEmailAndPassword, signInWithPopup, signOut } from "firebase/auth"; 
+import { getDoc, doc, setDoc } from 'firebase/firestore';
 
 export const Auth = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const navigate = useNavigate();
 
     const signIn = async () => {
         try {
@@ -16,9 +19,20 @@ export const Auth = () => {
 
     const signInWithGoogle = async () => {
         try {
-            await signInWithPopup(auth, googleProvider);
+            const result = await signInWithPopup(auth, googleProvider);
+            const userDocRef = doc(db, "users", result.user.uid);
+            const userDoc = await getDoc(userDocRef);
+            if (!userDoc.exists()) {
+                await setDoc(userDocRef, { 
+                    email: result.user.email,
+                    savedWorkouts: [],
+                    workouts: [],
+                });
+                console.log("User document created.");
+            }
+            navigate('/dashboard'); 
         } catch (err) {
-            console.error(err);
+            console.error("Error during sign-in with Google:", err);
         }
     };
 

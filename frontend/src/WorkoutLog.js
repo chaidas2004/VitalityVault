@@ -9,7 +9,7 @@ import {
   deleteDoc,
   addDoc,
   updateDoc,
-  arrayUnion, 
+  arrayUnion,
 } from 'firebase/firestore';
 import { auth, db } from './config/firebase.js';
 import { Auth } from './components/auth';
@@ -99,16 +99,17 @@ const removeExercise = async (index) => {
 
 const onSubmitWorkout = async () => {
   try {
-    await addDoc(workoutsCol, {
+    const docRef = await addDoc(workoutsCol, {
       name: newWorkoutTitle, 
       tags: newWorkoutTags,
       exercises: exercises,
       userId: auth?.currentUser?.uid,
       public: isPublic
     });
+    console.log("Workout created with ID:", docRef.id);
     navigate('/my-workouts')
   } catch (err) {
-    console.error(err);
+    console.error("Error adding document: ", err);
   }
 }
 
