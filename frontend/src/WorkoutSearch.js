@@ -51,8 +51,16 @@ const WorkoutSearch = () => {
     const workoutRef = doc(db, 'workouts', workoutIdStr);
     await updateDoc(workoutRef, {
         likes: increment(1)
-    });
-  };
+    }).then(() => {
+    setWorkouts(workouts.map(workout => {
+      if (workout.id === workoutId) {
+        return { ...workout, likes: (workout.likes || 0) + 1 };
+      } else {
+        return workout;
+      }
+    }));
+  });
+};
 
   const filteredWorkouts = workouts.filter((workout) => 
     workout.name.toLowerCase().includes(searchTerm.toLowerCase())
@@ -82,6 +90,7 @@ const WorkoutSearch = () => {
             ))}
             <button onClick={() => handleSaveWorkout(workout)}>Save Workout</button>
             <button onClick={() => handleLikeWorkout(workout.id)}>Like</button>
+            <span>{workout.likes || 0} Likes</span>
             </li>
           )) : <p>No public workouts.</p>}
       </ul>
