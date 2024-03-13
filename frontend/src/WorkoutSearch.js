@@ -68,7 +68,7 @@ const WorkoutSearch = () => {
             ))}
             <button onClick={() => handleSaveWorkout(workout)}>Save Workout</button>
             </li>
-          )) : <p>No public workouts found.</p>}
+          )) : <p>No public workouts.</p>}
       </ul>
     </div>
     </>
