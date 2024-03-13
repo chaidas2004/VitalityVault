@@ -1,29 +1,26 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Dashboard from './Header';
-import { collection, query, where, getDocs } from 'firebase/firestore';
-import { db } from './config/firebase';
-import { doc, updateDoc, increment } from 'firebase/firestore'; 
 
 const WorkoutSearch = () => {
   const [workouts, setWorkouts] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
- /* const [durationFilter, setDurationFilter] = useState('');
-  const [categoryFilter, setCategoryFilter] = useState('');*/
+  const [durationFilter, setDurationFilter] = useState('');
+  const [categoryFilter, setCategoryFilter] = useState('');
   const [savedWorkouts, setSavedWorkouts] = useState([]);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const fetchPublicWorkouts = async () => {
-      const q = query(collection(db, "workouts"), where("public", "==", true));
-      const querySnapshot = await getDocs(q);
-      const workoutsData = querySnapshot.docs.map(doc => ({
-        id: doc.id,
-        ...doc.data()
-      }));
-      setWorkouts(workoutsData);
+  useEffect(() => {//sample static workouts till back end is implemented
+    const fetchWorkouts = async () => {
+      const staticWorkouts = [
+        { id: 1, name: 'Leg Day', duration: 60, category: 'Strength' },
+        { id: 2, name: 'HIIT Cardio', duration: 45, category: 'Cardio' },
+        { id: 3, name: 'Upper Body Strength', duration: 50, category: 'Strength' },
+      ];
+      setWorkouts(staticWorkouts);
     };
-    fetchPublicWorkouts();
+
+    fetchWorkouts();
   }, []);
 
   useEffect(() => {
@@ -41,30 +38,12 @@ const WorkoutSearch = () => {
     navigate('/my-workouts');
   };
 
-  const handleLikeWorkout = async (workoutId) => {
-    console.log("Workout ID:", workoutId); 
-    console.log("Type of Workout ID:", typeof workoutId); 
-
-    const workoutIdStr = workoutId.toString();
-    console.log("Converted Workout ID to String:", workoutIdStr); 
-
-    const workoutRef = doc(db, 'workouts', workoutIdStr);
-    await updateDoc(workoutRef, {
-        likes: increment(1)
-    }).then(() => {
-    setWorkouts(workouts.map(workout => {
-      if (workout.id === workoutId) {
-        return { ...workout, likes: (workout.likes || 0) + 1 };
-      } else {
-        return workout;
-      }
-    }));
+  const filteredWorkouts = workouts.filter((workout) => {
+    const matchesSearchTerm = workout.name.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesDuration = !durationFilter || workout.duration === parseInt(durationFilter);
+    const matchesCategory = !categoryFilter || workout.category === categoryFilter;
+    return matchesSearchTerm && matchesDuration && matchesCategory;
   });
-};
-
-  const filteredWorkouts = workouts.filter((workout) => 
-    workout.name.toLowerCase().includes(searchTerm.toLowerCase())
-  );
 
   return (
     <>
@@ -73,26 +52,30 @@ const WorkoutSearch = () => {
       <h2>Workout Search and Filtering</h2>
       <input
         type="text"
-        placeholder="Search workouts by name"
+        placeholder="Search workouts"
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
       />
+      <select value={durationFilter} onChange={(e) => setDurationFilter(e.target.value)}>
+        <option value="">All Durations</option>
+        <option value="30">30 minutes</option>
+        <option value="45">45 minutes</option>
+        <option value="60">60 minutes</option>
+      </select>
+      <select value={categoryFilter} onChange={(e) => setCategoryFilter(e.target.value)}>
+        <option value="">All Categories</option>
+        <option value="Strength">Strength</option>
+        <option value="Cardio">Cardio</option>
+      </select>
       <ul>
-      {filteredWorkouts.length > 0 ? filteredWorkouts.map((workout) => (
+        {filteredWorkouts.map((workout) => (
           <li key={workout.id}>
             <p>Name: {workout.name}</p>
-            <p>Tag: {workout.tags}</p>
-            {workout.exercises.map((exercise, index) => (
-                <div key={index}>
-                  <p>Exercise: {exercise.name}</p>
-                  <p>Sets: {exercise.sets}, Reps: {exercise.reps}, Intensity: {exercise.intensity}%</p>
-                </div>
-            ))}
+            <p>Duration: {workout.duration} minutes</p>
+            <p>Category: {workout.category}</p>
             <button onClick={() => handleSaveWorkout(workout)}>Save Workout</button>
-            <button onClick={() => handleLikeWorkout(workout.id)}>Like</button>
-            <span>{workout.likes || 0} Likes</span>
-            </li>
-          )) : <p>No public workouts.</p>}
+          </li>
+        ))}
       </ul>
     </div>
     </>
