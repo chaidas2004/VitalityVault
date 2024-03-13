@@ -1,3 +1,3 @@
 ﻿# VitalityVault
 
-The fitness app dedicated to creating, tracking, and exploring workouts.
+The fitness app made easy for students,parents, athletes, beginners, and you. 
