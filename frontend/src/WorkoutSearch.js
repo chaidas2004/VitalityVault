@@ -1,85 +1,86 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import Dashboard from './Header';
+import React, { useState } from 'react';
+import { db } from './config/firebase';
+import { useNavigate } from 'react-router-dom'; 
+import { collection, query, where, getDocs } from "firebase/firestore";
+import Header from './Header.js';
 
 const WorkoutSearch = () => {
-  const [workouts, setWorkouts] = useState([]);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [durationFilter, setDurationFilter] = useState('');
-  const [categoryFilter, setCategoryFilter] = useState('');
-  const [savedWorkouts, setSavedWorkouts] = useState([]);
   const navigate = useNavigate();
+  const [workouts, setWorkouts] = useState([]);
+  const [name, setName] = useState('');
+  const [tags, setTags] = useState('');
+  const [searchError, setSearchError] = useState('');
 
-  useEffect(() => {//sample static workouts till back end is implemented
-    const fetchWorkouts = async () => {
-      const staticWorkouts = [
-        { id: 1, name: 'Leg Day', duration: 60, category: 'Strength' },
-        { id: 2, name: 'HIIT Cardio', duration: 45, category: 'Cardio' },
-        { id: 3, name: 'Upper Body Strength', duration: 50, category: 'Strength' },
-      ];
-      setWorkouts(staticWorkouts);
-    };
-
-    fetchWorkouts();
-  }, []);
-
-  useEffect(() => {
-    const savedWorkoutsString = localStorage.getItem('savedWorkouts');
-    if (savedWorkoutsString) {
-      const savedWorkoutsArray = JSON.parse(savedWorkoutsString);
-      setSavedWorkouts(savedWorkoutsArray);
-    }
-  }, []);
-
-  const handleSaveWorkout = (workout) => {
-    const updatedSavedWorkouts = [...savedWorkouts, workout];
-    localStorage.setItem('savedWorkouts', JSON.stringify(updatedSavedWorkouts));
-    setSavedWorkouts(updatedSavedWorkouts);
-    navigate('/my-workouts');
+  
+  const handleBackToHomepage = () => {
+    navigate('/dashboard');
   };
 
-  const filteredWorkouts = workouts.filter((workout) => {
-    const matchesSearchTerm = workout.name.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesDuration = !durationFilter || workout.duration === parseInt(durationFilter);
-    const matchesCategory = !categoryFilter || workout.category === categoryFilter;
-    return matchesSearchTerm && matchesDuration && matchesCategory;
-  });
+  const handleSearch = async () => {
+    let q = collection(db, "workouts");
 
+    if (name === '' && tags === '') {
+      q = query(q);
+    } else {
+      if (name !== '') {
+        q = query(q, where("name", "==", name));
+      }
+      if (tags !== '') {
+        q = query(q, where("tags", "==", tags));
+      }
+    }
+
+    const querySnapshot = await getDocs(q);
+
+    if (querySnapshot.empty) {
+      setSearchError('No such workout');
+      setWorkouts([]);
+      return;
+    }
+
+    const filteredWorkouts = [];
+    querySnapshot.forEach((doc) => {
+      filteredWorkouts.push({ id: doc.id, ...doc.data() });
+    });
+    setWorkouts(filteredWorkouts);
+    setSearchError('');
+  };
+  
   return (
-    <>
-    <Dashboard />
     <div>
-      <h2>Workout Search and Filtering</h2>
-      <input
-        type="text"
-        placeholder="Search workouts"
-        value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)}
-      />
-      <select value={durationFilter} onChange={(e) => setDurationFilter(e.target.value)}>
-        <option value="">All Durations</option>
-        <option value="30">30 minutes</option>
-        <option value="45">45 minutes</option>
-        <option value="60">60 minutes</option>
-      </select>
-      <select value={categoryFilter} onChange={(e) => setCategoryFilter(e.target.value)}>
-        <option value="">All Categories</option>
-        <option value="Strength">Strength</option>
-        <option value="Cardio">Cardio</option>
-      </select>
-      <ul>
-        {filteredWorkouts.map((workout) => (
-          <li key={workout.id}>
-            <p>Name: {workout.name}</p>
-            <p>Duration: {workout.duration} minutes</p>
-            <p>Category: {workout.category}</p>
-            <button onClick={() => handleSaveWorkout(workout)}>Save Workout</button>
-          </li>
+       <Header />
+       <button className="back-button" onClick={handleBackToHomepage}>Back to Homepage</button>
+      <h1>Workout Search</h1>
+
+      <label htmlFor="name">Name:</label>
+      <input type="text" id="name" value={name} onChange={(e) => setName(e.target.value)} /><br /><br />
+
+      <label htmlFor="tags">Tags:</label>
+      <input type="text" id="tags" value={tags} onChange={(e) => setTags(e.target.value)} /><br /><br />        
+
+      <button onClick={handleSearch}>Search</button>
+
+      <div>
+        {searchError && <p>{searchError}</p>}
+        {workouts.map((workout) => (
+          <div key={workout.id}>
+            <p>Name: {workout.name}, Tags: {workout.tags}</p>
+            <ul>
+              {Array.isArray(workout.exercises) ? (
+                workout.exercises.map((exercise, index) => (
+                  <li key={index}>
+                    Exercise: {exercise.name}, Sets: {exercise.sets}, Reps: {exercise.reps}, Intensity: {exercise.intensity}
+                  </li>
+                ))
+              ) : (
+                <li>No exercises found</li>
+              )}
+            </ul>
+          </div>
         ))}
-      </ul>
+      </div>
     </div>
-    </>
   );
 };
-
+  
 export default WorkoutSearch;
