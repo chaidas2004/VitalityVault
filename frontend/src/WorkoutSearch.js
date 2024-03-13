@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Dashboard from './Header';
+import { db } from './config/firebase'; 
+import { doc, updateDoc, increment } from 'firebase/firestore'; 
 
 const WorkoutSearch = () => {
   const [workouts, setWorkouts] = useState([]);
@@ -36,6 +38,19 @@ const WorkoutSearch = () => {
     localStorage.setItem('savedWorkouts', JSON.stringify(updatedSavedWorkouts));
     setSavedWorkouts(updatedSavedWorkouts);
     navigate('/my-workouts');
+  };
+
+  const handleLikeWorkout = async (workoutId) => {
+    console.log("Workout ID:", workoutId); 
+    console.log("Type of Workout ID:", typeof workoutId); 
+
+    const workoutIdStr = workoutId.toString();
+    console.log("Converted Workout ID to String:", workoutIdStr); 
+
+    const workoutRef = doc(db, 'workouts', workoutIdStr);
+    await updateDoc(workoutRef, {
+        likes: increment(1)
+    });
   };
 
   const filteredWorkouts = workouts.filter((workout) => {
@@ -74,6 +89,7 @@ const WorkoutSearch = () => {
             <p>Duration: {workout.duration} minutes</p>
             <p>Category: {workout.category}</p>
             <button onClick={() => handleSaveWorkout(workout)}>Save Workout</button>
+            <button onClick={() => handleLikeWorkout(workout.id)}>Like</button>
           </li>
         ))}
       </ul>
