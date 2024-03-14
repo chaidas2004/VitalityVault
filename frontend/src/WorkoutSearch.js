@@ -106,7 +106,7 @@ const WorkoutSearch = () => {
       {filteredWorkouts.length > 0 ? filteredWorkouts.map((workout) => (
           <li key={workout.id}>
             <p>Name: {workout.name}</p>
-            <p>Tag: {workout.tags}</p>
+            <p>Tag: {workout.tag || workout.tags || 'No tag'}</p>
             {workout.exercises.map((exercise, index) => (
                 <div key={index}>
                   <p>Exercise: {exercise.name}</p>

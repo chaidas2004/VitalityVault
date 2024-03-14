@@ -121,7 +121,7 @@ const MyWorkouts = () => {
             savedWorkouts.map((workout, index) => (
                 <div key={index}>
                     <h4>{workout.name || 'Unnamed Workout'}</h4>
-                    <p>Tag: {workout.tag}</p>
+                    <p>Tag: {workout.tag || workout.tags || 'No tag'}</p>
                     <button onClick={() => removeWorkout(workout.id, true)}>Remove from Saved</button>
                     <ul>
                         {workout.exercises.map((exercise, index) => (

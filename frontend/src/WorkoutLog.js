@@ -23,7 +23,7 @@ const navigate = useNavigate();
 
 //For New user logged workout:
 const [newWorkoutTitle, setNewWorkoutTitle] = useState("");
-const [newWorkoutTags, setNewWorkoutTags] = useState([]);
+const [newWorkoutTag, setNewWorkoutTag] = useState('Cardio'); //Default
 const [exercises, setExercises] = useState([]);
 
 //get all of the existing workouts and exercises
@@ -106,7 +106,7 @@ const onSubmitWorkout = async () => {
   try {
     const docRef = await addDoc(workoutsCol, {
       name: newWorkoutTitle, 
-      tags: newWorkoutTags,
+      tag: newWorkoutTag,
       exercises: exercises,
       userId: auth?.currentUser?.uid,
       public: isPublic
@@ -135,12 +135,23 @@ return (
         />
       </div>
       <div>
-        <label htmlFor="tag">Muscle Group Tag:</label>
-        <input
-          type="text"
-          onChange={(e) => setNewWorkoutTags(e.target.value)}
-          required
-        />
+        <label htmlFor="tag">Category:</label>
+        <select
+            value={newWorkoutTag}
+            onChange={(e) => setNewWorkoutTag(e.target.value)}
+            required
+          >
+            <option value="Cardio">Cardio</option>
+            <option value="strength training">Strength Training</option>
+            <option value="full-body">Full-Body</option>
+            <option value="arms">Arms</option>
+            <option value="legs">Legs</option>
+            <option value="back">Back</option>
+            <option value="chest">Chest</option>
+            <option value="shoulder">Shoulder</option>
+            <option value="core">Core</option>
+            <option value="yoga">Yoga</option>
+          </select>
       </div>
       <div>
         <label>
