@@ -9,15 +9,13 @@ import { collection,
   updateDoc, 
   increment, 
   arrayUnion,
-  getDoc,
-  setDoc } from 'firebase/firestore';
+  getDoc } from 'firebase/firestore';
 import { db, auth } from './config/firebase';
 
 const WorkoutSearch = () => {
   const [workouts, setWorkouts] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [tagFilter, setTagFilter] = useState('');
-  const [savedWorkouts, setSavedWorkouts] = useState([]);
   const navigate = useNavigate();
 
   const handleBackToHomepage = () => {

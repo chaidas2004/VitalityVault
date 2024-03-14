@@ -6,13 +6,10 @@ import {
   doc,
   getDocs,
   getDoc,
-  deleteDoc,
   addDoc,
   updateDoc,
-  arrayUnion,
 } from 'firebase/firestore';
 import { auth, db } from './config/firebase.js';
-import { Auth } from './components/auth';
 import Header from './Header.js';
  
 
@@ -27,7 +24,6 @@ const [newWorkoutTag, setNewWorkoutTag] = useState('Cardio'); //Default
 const [exercises, setExercises] = useState([]);
 
 //get all of the existing workouts and exercises
-const [workoutList, setWorkoutList] = useState([]); //may not need here 
 const [exerciseList, setExerciseList] = useState([]);
 
 //For exercises to be added to the workout
