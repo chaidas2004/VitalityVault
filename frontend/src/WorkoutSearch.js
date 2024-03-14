@@ -10,8 +10,7 @@ import { collection,
   increment, 
   arrayUnion,
   getDoc,
-  setDoc, 
-  onSnapshot} from 'firebase/firestore';
+  setDoc } from 'firebase/firestore';
 import { db, auth } from './config/firebase';
 
 const WorkoutSearch = () => {
@@ -27,20 +26,18 @@ const WorkoutSearch = () => {
 
   useEffect(() => {
     const fetchWorkouts = async () => {
-      let q = query(collection(db, "workouts"), where("public", "==", true), where("likes", ">", 0));
+      let q = query(collection(db, "workouts"), where("public", "==", true));
       if (tagFilter) {
-        q = query(q, where("tag", "==", tagFilter));
+        q = query(collection(db, "workouts"), where("public", "==", true), where("tag", "==", tagFilter));
       }
-      const unsubscribe = onSnapshot(q, (querySnapshot) => {
-        const workoutsData = querySnapshot.docs.map(doc => ({
-          id: doc.id,
-          ...doc.data()
-        }))
-        setWorkouts(workoutsData);
-      });
-      return () => unsubscribe();
-    }
-    fetchWorkouts()
+      const querySnapshot = await getDocs(q);
+      const workoutsData = querySnapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data()
+      }));
+      setWorkouts(workoutsData);
+    };
+    fetchWorkouts();
   }, [tagFilter]);
 
 
