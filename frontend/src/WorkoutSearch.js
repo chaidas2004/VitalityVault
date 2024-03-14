@@ -16,8 +16,7 @@ import { db, auth } from './config/firebase';
 const WorkoutSearch = () => {
   const [workouts, setWorkouts] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
- /* const [durationFilter, setDurationFilter] = useState('');
-  const [categoryFilter, setCategoryFilter] = useState('');*/
+  const [tagFilter, setTagFilter] = useState('');
   const [savedWorkouts, setSavedWorkouts] = useState([]);
   const navigate = useNavigate();
 
@@ -27,7 +26,10 @@ const WorkoutSearch = () => {
 
   useEffect(() => {
     const fetchWorkouts = async () => {
-      const q = query(collection(db, "workouts"), where("public", "==", true));
+      let q = query(collection(db, "workouts"), where("public", "==", true));
+      if (tagFilter) {
+        q = query(collection(db, "workouts"), where("public", "==", true), where("tag", "==", tagFilter));
+      }
       const querySnapshot = await getDocs(q);
       const workoutsData = querySnapshot.docs.map(doc => ({
         id: doc.id,
@@ -36,7 +38,7 @@ const WorkoutSearch = () => {
       setWorkouts(workoutsData);
     };
     fetchWorkouts();
-  }, []);
+  }, [tagFilter]);
 
 
   const handleSaveWorkout = async (workoutId) => {
@@ -102,6 +104,22 @@ const WorkoutSearch = () => {
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
       />
+      <select
+          value={tagFilter}
+          onChange={(e) => setTagFilter(e.target.value)}
+        >
+          <option value="">All Tags</option>
+          <option value="Cardio">Cardio</option>
+          <option value="strength training">Strength Training</option>
+          <option value="full-body">Full-Body</option>
+          <option value="arms">Arms</option>
+          <option value="legs">Legs</option>
+          <option value="back">Back</option>
+          <option value="chest">Chest</option>
+          <option value="shoulder">Shoulder</option>
+          <option value="core">Core</option>
+          <option value="yoga">Yoga</option>
+        </select>
       <ul>
       {filteredWorkouts.length > 0 ? filteredWorkouts.map((workout) => (
           <li key={workout.id}>
