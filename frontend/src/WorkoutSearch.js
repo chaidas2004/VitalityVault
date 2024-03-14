@@ -40,30 +40,18 @@ const WorkoutSearch = () => {
     fetchWorkouts();
   }, [tagFilter]);
 
-
   const handleSaveWorkout = async (workoutId) => {
     if (!auth.currentUser) {
       console.error("No user signed in!");
       return;
     }
-    const userRef = doc(db, 'users', auth.currentUser.uid);
-
     try {
-      const docSnap = await getDoc(userRef);
-      if (!docSnap.exists()) {
-        // If the user document does not exist, create it with the workoutId in savedWorkouts
-        await setDoc(userRef, {
-          savedWorkouts: [workoutId],
-        });
-        console.log(`User document created and workout ${workoutId} saved.`);
-      } else {
-        // If the user document exists, update it by adding the workoutId to savedWorkouts
-        await updateDoc(userRef, {
-          savedWorkouts: arrayUnion(workoutId),
-        });
-        console.log(`Workout ${workoutId} saved successfully.`);
-      }
-      navigate('/my-workouts'); // Navigate to the My Workouts page after saving
+      const workoutRef = doc(db, "workouts", workoutId);
+      await updateDoc(workoutRef, {
+        saverID: arrayUnion(auth.currentUser.uid)
+      });
+      console.log(`Workout ${workoutId} saved successfully.`);
+      navigate('/my-workouts'); 
     } catch (err) {
       console.error("Error saving workout:", err);
     }
