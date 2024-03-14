@@ -31,10 +31,14 @@ const WorkoutSearch = () => {
         q = query(collection(db, "workouts"), where("public", "==", true), where("tag", "==", tagFilter));
       }
       const querySnapshot = await getDocs(q);
-      const workoutsData = querySnapshot.docs.map(doc => ({
-        id: doc.id,
-        ...doc.data()
-      }));
+      const workoutsData = querySnapshot.docs.map(doc => {
+        const data = doc.data();
+        return {
+          id: doc.id,
+          ...data,
+          isLiked: data.likers?.includes(auth.currentUser?.uid) 
+        };
+      });
       setWorkouts(workoutsData);
     };
     fetchWorkouts();
@@ -62,50 +66,35 @@ const WorkoutSearch = () => {
       console.error("No user signed in!");
       return;
     }
-
-    const workoutIdStr = workoutId.toString();
-    console.log("Converted Workout ID to String:", workoutIdStr); 
-
-    const workoutRef = doc(db, 'workouts', workoutIdStr);
+    const workoutRef = doc(db, 'workouts', workoutId);
     const workoutDoc = await getDoc(workoutRef);
-    if (!workoutDoc.exists()) {
+    if (workoutDoc.exists()) {
+      const likers = workoutDoc.data().likers || [];
+      if (likers.includes(auth.currentUser.uid)) {
+        console.log("User already liked this workout!");
+        return;
+      }
+      try {
+        await updateDoc(workoutRef, {
+          likers: arrayUnion(auth.currentUser.uid),
+          likes: increment(1)
+        });
+        console.log("Workout liked successfully.");
+        setWorkouts(currentWorkouts =>
+          currentWorkouts.map(workout =>
+            workout.id === workoutId
+              ? { ...workout, isLiked: true, likes: (workout.likes || 0) + 1 }
+              : workout
+          )
+        );
+      } catch (error) {
+        console.error("Error updating document:", error);
+      }
+    } else {
       console.error("Workout document not found!");
-      return;
-    }
-    const userRef = doc(db, 'users', auth.currentUser.uid);
-    const userDoc = await getDoc(userRef);
-    if (!userDoc.exists()) {
-      console.error("User document not found!");
-      return;
-    }
-
-    const userData = userDoc.data();
-    const savedWorkouts = userData.savedWorkouts || [];
-
-    if (savedWorkouts.includes(workoutIdStr)) {
-      console.log("You've already liked this workout!");
-      return;
-    }
-    try {
-      await updateDoc(workoutRef, {
-        likes: increment(1)
-      });
-
-      await updateDoc(userRef, {
-        savedWorkouts: arrayUnion(workoutIdStr)
-      });
-
-      setWorkouts(workouts.map(workout => {
-        if (workout.id === workoutId) {
-          return { ...workout, likes: (workout.likes || 0) + 1 };
-        } else {
-          return workout;
-        }
-      }));
-    } catch (error) {
-      console.error("Error updating document:", error);
     }
   };
+
 
   const filteredWorkouts = workouts.filter((workout) => 
     workout.name.toLowerCase().includes(searchTerm.toLowerCase())
@@ -150,7 +139,9 @@ const WorkoutSearch = () => {
                 </div>
             ))}
             <button onClick={() => handleSaveWorkout(workout.id)}>Save Workout</button>
-            <button onClick={() => handleLikeWorkout(workout.id)}>Like</button>
+            <button onClick={() => handleLikeWorkout(workout.id)}>
+            {workout.isLiked ? 'Liked' : 'Like'}
+            </button>
             <span>{workout.likes || 0} Likes</span>
             </li>
           )) : <p>No public workouts found.</p>}
