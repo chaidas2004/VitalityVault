@@ -22,7 +22,7 @@ const MyWorkouts = () => {
       try {
         const querySnapshot = await getDocs(q);
         const workoutsData = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-        setSavedWorkouts(workoutsData);
+        setUserWorkouts(workoutsData);
         fetchComments(workoutsData.map(w => w.id));
       } catch (error) {
         console.error('Error fetching workouts:', error);

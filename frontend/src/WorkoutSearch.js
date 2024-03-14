@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Dashboard from './Header';
+import Header from './Header';
 import { collection, 
   query, 
   where, 
@@ -96,6 +96,7 @@ const WorkoutSearch = () => {
 
   return (
     <div>
+      <Header/>
       <button className="back-button" onClick={handleBackToHomepage}>Back to Homepage</button>
       <h2>Workout Search and Filtering</h2>
       <input
