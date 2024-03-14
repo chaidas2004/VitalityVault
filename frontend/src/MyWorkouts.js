@@ -30,38 +30,11 @@ const MyWorkouts = () => {
     };
 
     const fetchSavedWorkouts = async () => {
-      console.log("Fetching saved workouts for user:", currentUser.uid);
-      if (!currentUser) {
-        console.error("No user found.");
-        return;
-      }
-      const userDocRef = doc(db, 'users', currentUser.uid);
-      const userDoc = await getDoc(userDocRef);
-      if (!userDoc.exists()) {
-        console.log("User document does not exist.");
-        return;
-      }
-      const savedWorkoutIds = userDoc.data().savedWorkouts || [];
-      console.log("Saved workout IDs:", savedWorkoutIds);
-    
-      const savedWorkoutsData = await Promise.all(
-        savedWorkoutIds.map(async (workoutId) => {
-          const workoutRef = doc(db, 'workouts', workoutId);
-          const workoutSnap = await getDoc(workoutRef);
-          if (workoutSnap.exists()) {
-            console.log(`Fetched saved workout: ${workoutSnap.id}`);
-            return { id: workoutSnap.id, ...workoutSnap.data() };
-          } else {
-            console.log(`Workout not found: ${workoutId}`);
-            return null;
-          }
-        })
-      );
-    
-      const filteredWorkouts = savedWorkoutsData.filter(workout => workout !== null);
-      console.log("Filtered saved workouts:", filteredWorkouts);
-      setSavedWorkouts(filteredWorkouts);
+      const q = query(collection(db, 'workouts'), where('saverID', 'array-contains', currentUser.uid));
+      const querySnapshot = await getDocs(q);
+      setSavedWorkouts(querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })));
     };
+
   fetchWorkouts();
   fetchSavedWorkouts();
 }, [currentUser]);
@@ -95,9 +68,8 @@ const MyWorkouts = () => {
   const removeWorkout = async (workoutId, isSavedWorkout) => {
     try {
       if (isSavedWorkout) {
-        const userRef = doc(db, 'users', currentUser.uid);
-        await updateDoc(userRef, {
-          savedWorkouts: arrayRemove(workoutId)
+        await updateDoc(doc(db, "workouts", workoutId), {
+          saverID: arrayRemove(currentUser.uid)
         });
         setSavedWorkouts(savedWorkouts.filter(workout => workout.id !== workoutId));
       } else {
