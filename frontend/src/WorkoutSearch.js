@@ -70,25 +70,54 @@ const WorkoutSearch = () => {
   };
 
   const handleLikeWorkout = async (workoutId) => {
-    console.log("Workout ID:", workoutId); 
-    console.log("Type of Workout ID:", typeof workoutId); 
+    if (!auth.currentUser) {
+      console.error("No user signed in!");
+      return;
+    }
 
     const workoutIdStr = workoutId.toString();
     console.log("Converted Workout ID to String:", workoutIdStr); 
 
     const workoutRef = doc(db, 'workouts', workoutIdStr);
-    await updateDoc(workoutRef, {
+    const workoutDoc = await getDoc(workoutRef);
+    if (!workoutDoc.exists()) {
+      console.error("Workout document not found!");
+      return;
+    }
+    const userRef = doc(db, 'users', auth.currentUser.uid);
+    const userDoc = await getDoc(userRef);
+    if (!userDoc.exists()) {
+      console.error("User document not found!");
+      return;
+    }
+
+    const userData = userDoc.data();
+    const savedWorkouts = userData.savedWorkouts || [];
+
+    if (savedWorkouts.includes(workoutIdStr)) {
+      console.log("You've already liked this workout!");
+      return;
+    }
+    try {
+      await updateDoc(workoutRef, {
         likes: increment(1)
-    }).then(() => {
-    setWorkouts(workouts.map(workout => {
-      if (workout.id === workoutId) {
-        return { ...workout, likes: (workout.likes || 0) + 1 };
-      } else {
-        return workout;
-      }
-    }));
-  });
-};
+      });
+
+      await updateDoc(userRef, {
+        savedWorkouts: arrayUnion(workoutIdStr)
+      });
+
+      setWorkouts(workouts.map(workout => {
+        if (workout.id === workoutId) {
+          return { ...workout, likes: (workout.likes || 0) + 1 };
+        } else {
+          return workout;
+        }
+      }));
+    } catch (error) {
+      console.error("Error updating document:", error);
+    }
+  };
 
   const filteredWorkouts = workouts.filter((workout) => 
     workout.name.toLowerCase().includes(searchTerm.toLowerCase())
